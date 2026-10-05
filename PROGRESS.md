@@ -18,7 +18,7 @@
 
 ## 下一步
 
-- 阶段 1.4：DataScopeMiddleware（等待 1.3 验收后开始）
+- 阶段 1.5：脱敏工具 + SsrfGuard + 限流守卫
 
 ## 阶段 0 进度
 
@@ -52,3 +52,4 @@
 - 1.2 AuthModule implements bcrypt login, two-hour access JWT, seven-day rotating refresh JWT, and a global default-deny AuthGuard. Login, JWT, refresh replay, and guard tests pass; backend typecheck passes (9 auth tests).
 - 1.3 PermissionsModule adds parameterized role/permission/menu CRUD and assignment APIs, a global permission guard, idempotent boss/operator/finance seeds, and audited writes. RBAC tests cover grants, denials, boss defaults, and seed mappings; full backend typecheck and 20 unit tests pass.
 - `.env.example` now contains a valid 32-byte hex format placeholder, documents the random-key generation command, and CryptoService rejects the all-zero placeholder.
+- 1.4 DataScopeMiddleware adds a Prisma `$extends` query extension driven by AsyncLocalStorage: operators get store_id filters auto-injected on store-scoped models (findMany/findFirst/count/aggregate/groupBy/updateMany/deleteMany), boss is unfiltered. DataScopeService resolves role+bound stores; DataScopeInterceptor wraps requests. 6 new tests; 26 total tests pass, backend typecheck passes.
