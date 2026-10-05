@@ -53,4 +53,4 @@
 - 1.3 PermissionsModule adds parameterized role/permission/menu CRUD and assignment APIs, a global permission guard, idempotent boss/operator/finance seeds, and audited writes. RBAC tests cover grants, denials, boss defaults, and seed mappings; full backend typecheck and 20 unit tests pass.
 - `.env.example` now contains a valid 32-byte hex format placeholder, documents the random-key generation command, and CryptoService rejects the all-zero placeholder.
 - 1.4 DataScopeMiddleware adds a Prisma `$extends` query extension driven by AsyncLocalStorage: operators get store_id filters auto-injected on store-scoped models (findMany/findFirst/count/aggregate/groupBy/updateMany/deleteMany), boss is unfiltered. DataScopeService resolves role+bound stores; DataScopeInterceptor wraps requests. 6 new tests; 26 total tests pass, backend typecheck passes.
-- 1.5 progress: sensitive-field masking utility and tests implemented; validation in progress. SSRF guard and Redis login rate limiting remain.
+- 1.5 progress: sensitive-field masking and SSRF URL validation implemented; both unit-test groups pass. Redis login rate limiting remains in progress.
