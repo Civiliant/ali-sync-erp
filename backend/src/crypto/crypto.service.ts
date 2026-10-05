@@ -25,6 +25,9 @@ export class CryptoService {
     if (this.key.length !== 32) {
       throw new Error('APP_ENCRYPTION_KEY must decode to exactly 32 bytes');
     }
+    if (this.key.every((byte) => byte === 0)) {
+      throw new Error('APP_ENCRYPTION_KEY must be replaced with a random key');
+    }
   }
 
   encrypt(plaintext: string): string {

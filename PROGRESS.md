@@ -18,7 +18,7 @@
 
 ## 下一步
 
-- 阶段 1.3：PermissionsModule（等待本批安全基础模块验收后开始）
+- 阶段 1.4：DataScopeMiddleware（等待 1.3 验收后开始）
 
 ## 阶段 0 进度
 
@@ -50,3 +50,5 @@
 
 - 1.1 CryptoService uses AES-256-GCM with a 32-byte APP_ENCRYPTION_KEY; round-trip, tampering, and key validation tests pass (3 tests).
 - 1.2 AuthModule implements bcrypt login, two-hour access JWT, seven-day rotating refresh JWT, and a global default-deny AuthGuard. Login, JWT, refresh replay, and guard tests pass; backend typecheck passes (9 auth tests).
+- 1.3 PermissionsModule adds parameterized role/permission/menu CRUD and assignment APIs, a global permission guard, idempotent boss/operator/finance seeds, and audited writes. RBAC tests cover grants, denials, boss defaults, and seed mappings; full backend typecheck and 20 unit tests pass.
+- `.env.example` now contains a valid 32-byte hex format placeholder, documents the random-key generation command, and CryptoService rejects the all-zero placeholder.

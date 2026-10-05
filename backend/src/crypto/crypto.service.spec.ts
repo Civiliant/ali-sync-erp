@@ -33,4 +33,13 @@ describe('CryptoService', () => {
         } as unknown as ConfigService),
     ).toThrow('APP_ENCRYPTION_KEY must be a 32-byte hex or base64-encoded key');
   });
+
+  it('rejects the documented all-zero placeholder key', () => {
+    expect(
+      () =>
+        new CryptoService({
+          get: () => '0'.repeat(64),
+        } as unknown as ConfigService),
+    ).toThrow('APP_ENCRYPTION_KEY must be replaced with a random key');
+  });
 });

@@ -17,7 +17,7 @@
 
 - [x] 1.1 `CryptoService`（AES-256-GCM，独立 APP_ENCRYPTION_KEY）
 - [x] 1.2 `AuthModule`（登录、JWT access+refresh、`AuthGuard`）
-- [ ] 1.3 `PermissionsModule`（角色/权限/菜单 RBAC，`@Permissions()` 守卫）
+- [x] 1.3 `PermissionsModule`（角色/权限/菜单 RBAC，`@Permissions()` 守卫）
 - [ ] 1.4 `DataScopeMiddleware`（店铺级数据隔离，全局 Prisma 中间件）
 - [ ] 1.5 脱敏工具 + `SsrfGuard` + 限流守卫
 - [ ] 1.6 审计日志（audit_events / operation_logs / login_logs）
