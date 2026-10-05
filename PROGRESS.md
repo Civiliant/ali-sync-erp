@@ -20,6 +20,10 @@
 
 - 阶段 0：项目初始化（按 BACKLOG.md）
 
+## 阶段 0 进度
+
+- 0.1 NestJS backend initialized with required dependencies; `tsc --noEmit` passes.
+
 ## 关键决策记录
 
 | 决策 | 结论 |
