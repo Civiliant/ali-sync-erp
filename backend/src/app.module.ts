@@ -7,6 +7,7 @@ import { CryptoModule } from './crypto/crypto.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { PermissionsModule } from './permissions/permissions.module.js';
 import { DataScopeModule } from './data-scope/data-scope.module.js';
+import { SecurityModule } from './security/security.module.js';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { DataScopeModule } from './data-scope/data-scope.module.js';
     AuthModule,
     PermissionsModule,
     DataScopeModule,
+    SecurityModule,
   ],
   controllers: [AppController],
   providers: [AppService],

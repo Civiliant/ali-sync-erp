@@ -2,10 +2,10 @@ type SensitiveKind = 'phone' | 'email' | 'address' | 'bankAccount';
 type PlainObject = Record<string, unknown>;
 
 const FIELD_PATTERNS: ReadonlyArray<[SensitiveKind, RegExp]> = [
-  ['phone', /^(phone|phonenumber|mobile|mobilenumber|telephone|tel|buyerphone)$/],
-  ['email', /^(email|emailaddress|mail|buyeremail)$/],
-  ['address', /^(address|fulladdress|shippingaddress|billingaddress|buyeraddress)$/],
-  ['bankAccount', /^(bankaccount|bankaccountnumber|bankcard|bankcardnumber|cardnumber|accountnumber)$/],
+  ['phone', /(phone|mobile|telephone|tel)/],
+  ['email', /(email|mail)/],
+  ['address', /address/],
+  ['bankAccount', /(bankaccount|bankcard|cardnumber|accountnumber)/],
 ];
 
 function normalizeFieldName(fieldName: string): string {
@@ -28,7 +28,7 @@ function maskString(kind: SensitiveKind, value: string): string {
     }
     case 'address': {
       const characters = Array.from(value);
-      return characters.length <= 6 ? '*'.repeat(characters.length) : `${characters.slice(0, 6).join('')}***`;
+      return characters.length <= 6 ? value : `${characters.slice(0, 6).join('')}***`;
     }
     case 'bankAccount':
       return value.length <= 4 ? '*'.repeat(value.length) : `${'*'.repeat(value.length - 4)}${value.slice(-4)}`;

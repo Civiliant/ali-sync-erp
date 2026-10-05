@@ -11,6 +11,7 @@ describe('maskSensitive', () => {
 
   it('preserves at most the first six address characters', () => {
     expect(maskSensitive('北京市朝阳区建国路88号', 'address')).toBe('北京市朝阳区***');
+    expect(maskSensitive('短地址', 'address')).toBe('短地址');
   });
 
   it('masks bank account numbers except for their final four characters', () => {
@@ -18,9 +19,10 @@ describe('maskSensitive', () => {
   });
 
   it('recursively masks sensitive fields in objects and arrays', () => {
-    expect(maskSensitive({ buyer: { phone_number: '13812348888' }, contacts: [{ email: 'alice@example.com' }] })).toEqual({
+    expect(maskSensitive({ buyer: { phone_number: '13812348888' }, contacts: [{ email: 'alice@example.com' }], receiverAddress: '北京市朝阳区建国路88号' })).toEqual({
       buyer: { phone_number: '138****8888' },
       contacts: [{ email: 'a***@example.com' }],
+      receiverAddress: '北京市朝阳区***',
     });
   });
 });

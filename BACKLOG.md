@@ -19,7 +19,7 @@
 - [x] 1.2 `AuthModule`（登录、JWT access+refresh、`AuthGuard`）
 - [x] 1.3 `PermissionsModule`（角色/权限/菜单 RBAC，`@Permissions()` 守卫）
 - [x] 1.4 `DataScopeMiddleware`（店铺级数据隔离，Prisma `$extends` 扩展 + AsyncLocalStorage）
-- [ ] 1.5 脱敏工具 + `SsrfGuard` + 限流守卫
+- [x] 1.5 脱敏工具 + `SsrfGuard` + 限流守卫
 - [ ] 1.6 审计日志（audit_events / operation_logs / login_logs）
 
 ## 阶段 2：店铺与阿里对接（P0）

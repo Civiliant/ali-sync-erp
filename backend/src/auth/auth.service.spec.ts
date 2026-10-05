@@ -6,6 +6,7 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import { AuthService } from './auth.service.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RefreshTokenStore } from './refresh-token-store.js';
+import { LoginRateLimitStore } from '../security/rate-limit.constants.js';
 
 describe('AuthService', () => {
   const secret = randomBytes(48).toString('base64url');
@@ -15,6 +16,8 @@ describe('AuthService', () => {
   let findUnique: ReturnType<typeof vi.fn>;
   let addRefreshToken: ReturnType<typeof vi.fn>;
   let consumeRefreshToken: ReturnType<typeof vi.fn>;
+  let recordLoginFailure: ReturnType<typeof vi.fn>;
+  let clearLoginFailures: ReturnType<typeof vi.fn>;
 
   beforeAll(async () => {
     passwordHash = await bcrypt.hash(password, 4);
@@ -24,6 +27,8 @@ describe('AuthService', () => {
     findUnique = vi.fn();
     addRefreshToken = vi.fn().mockResolvedValue(undefined);
     consumeRefreshToken = vi.fn().mockResolvedValue(true);
+    recordLoginFailure = vi.fn().mockResolvedValue(undefined);
+    clearLoginFailures = vi.fn().mockResolvedValue(undefined);
 
     const prisma = {
       user: { findUnique },
@@ -41,6 +46,11 @@ describe('AuthService', () => {
       new JwtService({}),
       config,
       refreshTokenStore,
+      {
+        assertAllowed: vi.fn(),
+        recordFailure: recordLoginFailure,
+        clearFailures: clearLoginFailures,
+      } as LoginRateLimitStore,
     );
   });
 
@@ -59,7 +69,7 @@ describe('AuthService', () => {
       deletedAt: null,
     });
 
-    const tokens = await service.login({ username: 'operator', password });
+    const tokens = await service.login({ username: 'operator', password }, '203.0.113.9');
 
     expect(tokens).toMatchObject({ tokenType: 'Bearer', expiresIn: 7200 });
     expect(tokens).not.toHaveProperty('passwordHash');
@@ -73,6 +83,7 @@ describe('AuthService', () => {
     const refreshPayload = new JwtService({}).decode(tokens.refreshToken);
     expect(refreshPayload.exp - refreshPayload.iat).toBe(604800);
     expect(addRefreshToken).toHaveBeenCalledWith('12', expect.any(String));
+    expect(clearLoginFailures).toHaveBeenCalledWith('203.0.113.9', 'operator');
   });
 
   it('rejects invalid credentials with a generic response', async () => {
@@ -88,8 +99,9 @@ describe('AuthService', () => {
       service.login({
         username: 'operator',
         password: randomBytes(24).toString('hex'),
-      }),
+      }, '203.0.113.9'),
     ).rejects.toThrow('Invalid username or password');
+    expect(recordLoginFailure).toHaveBeenCalledWith('203.0.113.9', 'operator', expect.objectContaining({ limit: 5 }));
   });
 
   it('rejects unknown or inactive accounts without disclosing account state', async () => {

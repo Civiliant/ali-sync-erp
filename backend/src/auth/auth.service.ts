@@ -18,6 +18,11 @@ import {
   REFRESH_TOKEN_STORE,
   type RefreshTokenStore,
 } from './refresh-token-store.js';
+import {
+  LOGIN_RATE_LIMIT_OPTIONS,
+  LOGIN_RATE_LIMIT_STORE,
+  type LoginRateLimitStore,
+} from '../security/rate-limit.constants.js';
 
 interface TokenPayload {
   sub: string;
@@ -48,6 +53,8 @@ export class AuthService {
     private readonly configService: ConfigService,
     @Inject(REFRESH_TOKEN_STORE)
     private readonly refreshTokenStore: RefreshTokenStore,
+    @Inject(LOGIN_RATE_LIMIT_STORE)
+    private readonly loginRateLimitStore: LoginRateLimitStore,
   ) {
     const jwtSecret = configService.get<string>('JWT_SECRET');
     if (!jwtSecret || jwtSecret.length < 32 || jwtSecret.startsWith('change-me')) {
@@ -56,7 +63,7 @@ export class AuthService {
     this.jwtSecret = jwtSecret;
   }
 
-  async login(dto: LoginDto): Promise<TokenPair> {
+  async login(dto: LoginDto, ip = 'unknown'): Promise<TokenPair> {
     const user = await this.prisma.user.findUnique({
       where: { username: dto.username },
       select: {
@@ -74,8 +81,15 @@ export class AuthService {
       user.deletedAt !== null ||
       !(await bcrypt.compare(dto.password, user.passwordHash))
     ) {
+      await this.loginRateLimitStore.recordFailure(
+        ip,
+        dto.username,
+        LOGIN_RATE_LIMIT_OPTIONS,
+      );
       throw new UnauthorizedException('Invalid username or password');
     }
+
+    await this.loginRateLimitStore.clearFailures(ip, dto.username);
 
     return this.issueTokenPair({
       id: user.id.toString(),
