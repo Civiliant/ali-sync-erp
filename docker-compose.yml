@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: alisync-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: alisync
+      POSTGRES_PASSWORD: alisync
+      POSTGRES_DB: alisync
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: alisync-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  # 后端 NestJS（开发阶段构建后启用）
+  # api:
+  #   build: ./backend
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - postgres
+  #     - redis
+
+  # Worm 打印渲染微服务（阶段6启用）
+  # worm-render:
+  #   build: ./services/worm-render
+  #   ports:
+  #     - "3001:3001"
+  #   environment:
+  #     - RENDER_API_KEY=change-me
+
+volumes:
+  pgdata:
+  redisdata:
