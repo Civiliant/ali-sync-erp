@@ -40,3 +40,7 @@
 ## 踩坑记录
 
 （开发中遇到并解决的问题记录在这里，供后续 AI 会话参考）
+
+## Phase 0 Verification
+
+- 0.4 `.env` copied from `.env.example`; PostgreSQL 16 and Redis 7 Compose configuration verified. Docker is unavailable in this environment, so containers were not started.
