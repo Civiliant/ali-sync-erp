@@ -45,3 +45,7 @@
 
 - 0.4 `.env` copied from `.env.example`; PostgreSQL 16 and Redis 7 Compose configuration verified. Docker is unavailable in this environment, so containers were not started.
 - 0.5 Unified API response, global validation, and safe exception filtering added; backend typecheck and frontend build pass.
+
+## Phase 1 Progress
+
+- 1.1 CryptoService uses AES-256-GCM with a 32-byte APP_ENCRYPTION_KEY; round-trip, tampering, and key validation tests pass (3 tests).
