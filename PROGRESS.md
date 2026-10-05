@@ -18,12 +18,13 @@
 
 ## 下一步
 
-- 阶段 0.3：根据数据库 SQL 编写 Prisma schema
+- 阶段 0.4：配置环境变量与 PostgreSQL/Redis Docker Compose
 
 ## 阶段 0 进度
 
 - 0.1 NestJS backend initialized with required dependencies; `tsc --noEmit` passes.
 - 0.2 Vue 3 + TypeScript + Vite frontend initialized with Element Plus and Pinia; `vite build` passes.
+- 0.3 Prisma schema created for all 53 database tables; `prisma validate` and backend `tsc --noEmit` pass.
 
 ## 关键决策记录
 
