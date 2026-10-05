@@ -44,3 +44,4 @@
 ## Phase 0 Verification
 
 - 0.4 `.env` copied from `.env.example`; PostgreSQL 16 and Redis 7 Compose configuration verified. Docker is unavailable in this environment, so containers were not started.
+- 0.5 Unified API response, global validation, and safe exception filtering added; backend typecheck and frontend build pass.
